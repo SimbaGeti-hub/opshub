@@ -14,7 +14,39 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strict": false,
-    "paths": {}
+    "paths": {
+      "@opshub/shared/models": ["./libs/shared/models/src/index.ts"],
+      "@opshub/shared/util": ["./libs/shared/util/src/index.ts"],
+      "@opshub/web/ui": ["./libs/web/ui/src/index.ts"],
+      "@opshub/web/auth": ["./libs/web/auth/src/index.ts"],
+      "@opshub/web/data-access": ["./libs/web/data-access/src/index.ts"],
+      "@opshub/web/shell": ["./libs/web/shell/src/index.ts"],
+      "@opshub/web/feature-dashboard": [
+        "./libs/web/feature-dashboard/src/index.ts"
+      ],
+      "@opshub/web/feature-tasks": ["./libs/web/feature-tasks/src/index.ts"],
+      "@opshub/web/feature-resources": [
+        "./libs/web/feature-resources/src/index.ts"
+      ],
+      "@opshub/web/feature-users": ["./libs/web/feature-users/src/index.ts"],
+      "@opshub/web/feature-team": ["./libs/web/feature-team/src/index.ts"],
+      "@opshub/web/feature-analytics": [
+        "./libs/web/feature-analytics/src/index.ts"
+      ],
+      "@opshub/web/feature-reports": [
+        "./libs/web/feature-reports/src/index.ts"
+      ],
+      "@opshub/web/feature-audit": ["./libs/web/feature-audit/src/index.ts"],
+      "@opshub/web/feature-notifications": [
+        "./libs/web/feature-notifications/src/index.ts"
+      ],
+      "@opshub/web/feature-settings": [
+        "./libs/web/feature-settings/src/index.ts"
+      ],
+      "@opshub/api/auth": ["./libs/api/auth/src/index.ts"],
+      "@opshub/api/prisma": ["./libs/api/prisma/src/index.ts"],
+      "@opshub/api/common": ["./libs/api/common/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
