@@ -7,3 +7,4 @@ export * from './lib/icon-button/icon-button';
 export * from './lib/input/input';
 export * from './lib/page-header/page-header';
 export * from './lib/stat-card/stat-card';
+export * from './lib/chart-card/chart-card';
