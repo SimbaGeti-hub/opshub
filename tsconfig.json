@@ -5,6 +5,60 @@
   "references": [
     {
       "path": "./libs/web/ui"
+    },
+    {
+      "path": "./libs/web/feature-notifications"
+    },
+    {
+      "path": "./libs/web/feature-analytics"
+    },
+    {
+      "path": "./libs/web/feature-dashboard"
+    },
+    {
+      "path": "./libs/web/feature-resources"
+    },
+    {
+      "path": "./libs/web/feature-settings"
+    },
+    {
+      "path": "./libs/web/feature-reports"
+    },
+    {
+      "path": "./libs/web/feature-audit"
+    },
+    {
+      "path": "./libs/web/feature-tasks"
+    },
+    {
+      "path": "./libs/web/feature-users"
+    },
+    {
+      "path": "./libs/web/feature-team"
+    },
+    {
+      "path": "./libs/web/data-access"
+    },
+    {
+      "path": "./libs/shared/models"
+    },
+    {
+      "path": "./libs/shared/util"
+    },
+    {
+      "path": "./libs/api/common"
+    },
+    {
+      "path": "./libs/api/prisma"
+    },
+    {
+      "path": "./libs/web/shell"
+    },
+    {
+      "path": "./libs/api/auth"
+    },
+    {
+      "path": "./libs/web/auth"
     }
   ]
 }

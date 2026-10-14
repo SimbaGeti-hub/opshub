@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LucideDynamicIcon } from '@lucide/angular';
 import { Avatar, IconButton, ThemeService } from '@opshub/web/ui';
 
@@ -10,7 +10,7 @@ import { Avatar, IconButton, ThemeService } from '@opshub/web/ui';
   templateUrl: './top-nav.html',
 })
 export class TopNav {
-  constructor(private readonly themeService: ThemeService) {}
+  private readonly themeService = inject(ThemeService);
 
   toggleTheme(): void {
     this.themeService.toggle();
