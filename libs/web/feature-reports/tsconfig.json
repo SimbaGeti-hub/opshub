@@ -1,6 +1,7 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "composite": true,
     "isolatedModules": true,
     "target": "es2022",
     "strict": true,

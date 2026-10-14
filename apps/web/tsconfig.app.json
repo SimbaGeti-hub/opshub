@@ -11,5 +11,13 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../libs/web/shell/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/web/ui/tsconfig.lib.json"
+    }
   ]
 }

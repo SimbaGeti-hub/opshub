@@ -1,0 +1,51 @@
+<aside
+  class="flex h-full flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)] transition-[width] duration-[var(--motion-base)]"
+  [class.w-64]="!collapsed()"
+  [class.w-20]="collapsed()"
+>
+  <div class="flex h-16 items-center justify-between px-4">
+    @if (!collapsed()) {
+    <span class="text-lg font-semibold text-[var(--color-text)]">OpsHub</span>
+    }
+    <ops-icon-button
+      [label]="collapsed() ? 'Expand sidebar' : 'Collapse sidebar'"
+      (click)="toggle()"
+    >
+      <svg
+        [lucideIcon]="collapsed() ? 'panel-left-open' : 'panel-left-close'"
+      ></svg>
+    </ops-icon-button>
+  </div>
+
+  <nav class="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-2">
+    @for (item of mainNav; track item.path) {
+    <a
+      [routerLink]="item.path"
+      routerLinkActive="bg-[var(--color-bg)] text-[var(--color-primary)] font-medium"
+      class="flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--color-text-muted)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--color-bg)] hover:text-[var(--color-text)]"
+    >
+      <svg [lucideIcon]="item.icon" class="h-5 w-5 shrink-0"></svg>
+      @if (!collapsed()) {
+      <span>{{ item.label }}</span>
+      }
+    </a>
+    }
+  </nav>
+
+  <div
+    class="flex flex-col gap-1 border-t border-[var(--color-border)] px-3 py-2"
+  >
+    @for (item of secondaryNav; track item.path) {
+    <a
+      [routerLink]="item.path"
+      routerLinkActive="bg-[var(--color-bg)] text-[var(--color-primary)] font-medium"
+      class="flex items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-sm text-[var(--color-text-muted)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--color-bg)] hover:text-[var(--color-text)]"
+    >
+      <svg [lucideIcon]="item.icon" class="h-5 w-5 shrink-0"></svg>
+      @if (!collapsed()) {
+      <span>{{ item.label }}</span>
+      }
+    </a>
+    }
+  </div>
+</aside>
