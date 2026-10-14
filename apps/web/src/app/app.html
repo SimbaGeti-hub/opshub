@@ -1,2 +1,9 @@
-<ops-nx-welcome></ops-nx-welcome>
-<router-outlet></router-outlet>
+<div class="flex h-screen overflow-hidden bg-[var(--color-bg)]">
+  <ops-sidebar />
+  <div class="flex flex-1 flex-col overflow-hidden">
+    <ops-top-nav />
+    <main class="flex-1 overflow-y-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
