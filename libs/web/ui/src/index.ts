@@ -2,3 +2,4 @@ export * from './lib/web-ui/web-ui';
 export * from './lib/theme/theme.service';
 export * from './lib/button/button';
 export * from './lib/badge/badge';
+export * from './lib/avatar/avatar';
