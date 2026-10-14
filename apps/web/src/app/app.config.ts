@@ -17,6 +17,9 @@ import {
   LucideCircleHelp,
   LucidePanelLeftOpen,
   LucidePanelLeftClose,
+  LucideSearch,
+  LucideSunMoon,
+  LucideBell,
 } from '@lucide/angular';
 import { ThemeService } from '@opshub/web/ui';
 import { appRoutes } from './app.routes';
@@ -36,6 +39,9 @@ export const appConfig: ApplicationConfig = {
       LucideCircleHelp,
       LucidePanelLeftOpen,
       LucidePanelLeftClose,
+      LucideSearch,
+      LucideSunMoon,
+      LucideBell,
     ),
     provideAppInitializer(() => {
       inject(ThemeService);
