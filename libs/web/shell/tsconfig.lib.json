@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
@@ -14,5 +15,10 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../ui/tsconfig.lib.json"
+    }
   ]
 }
