@@ -65,8 +65,13 @@ export class Input implements ControlValueAccessor {
   value = signal<string>('');
   disabled = signal<boolean>(false);
 
-  private onChange: (value: string) => void = () => {};
-  onTouched: () => void = () => {};
+  private onChange: (value: string) => void = (_value: string) => {
+    /* overridden by registerOnChange once the form binds */
+  };
+
+  onTouched: () => void = () => {
+    /* overridden by registerOnTouched once the form binds */
+  };
 
   onInput(event: Event): void {
     const target = event.target as HTMLInputElement;
