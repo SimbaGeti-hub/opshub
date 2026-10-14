@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IconButton } from '@opshub/web/ui';
-import { LucideIcon } from '@lucide/angular';
+import { LucideDynamicIcon } from '@lucide/angular';
 
 interface NavItem {
   label: string;
@@ -12,7 +12,7 @@ interface NavItem {
 @Component({
   selector: 'ops-sidebar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, IconButton, LucideIcon],
+  imports: [RouterLink, RouterLinkActive, IconButton, LucideDynamicIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './sidebar.html',
 })
