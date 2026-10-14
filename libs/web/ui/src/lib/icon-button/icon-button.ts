@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { LucideAngularModule, LucideIconData } from 'lucide-angular';
 
 export type IconButtonVariant = 'primary' | 'ghost';
 export type IconButtonSize = 'sm' | 'md' | 'lg';
@@ -7,7 +6,6 @@ export type IconButtonSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'ops-icon-button',
   standalone: true,
-  imports: [LucideAngularModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
@@ -16,12 +14,11 @@ export type IconButtonSize = 'sm' | 'md' | 'lg';
       [attr.aria-label]="label()"
       [class]="classes()"
     >
-      <lucide-angular [img]="icon()" [size]="iconPx()" />
+      <ng-content />
     </button>
   `,
 })
 export class IconButton {
-  icon = input.required<LucideIconData>();
   label = input.required<string>();
   variant = input<IconButtonVariant>('ghost');
   size = input<IconButtonSize>('md');
@@ -29,7 +26,7 @@ export class IconButton {
   type = input<'button' | 'submit' | 'reset'>('button');
 
   private readonly base =
-    'inline-flex items-center justify-center rounded-[var(--radius-md)] transition-colors duration-[var(--motion-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+    'inline-flex items-center justify-center rounded-[var(--radius-md)] transition-colors duration-[var(--motion-fast)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:h-[1em] [&_svg]:w-[1em]';
 
   private readonly variants: Record<IconButtonVariant, string> = {
     primary:
@@ -39,22 +36,12 @@ export class IconButton {
   };
 
   private readonly sizes: Record<IconButtonSize, string> = {
-    sm: 'h-8 w-8',
-    md: 'h-10 w-10',
-    lg: 'h-12 w-12',
-  };
-
-  private readonly iconSizes: Record<IconButtonSize, number> = {
-    sm: 16,
-    md: 20,
-    lg: 24,
+    sm: 'h-8 w-8 text-base',
+    md: 'h-10 w-10 text-lg',
+    lg: 'h-12 w-12 text-xl',
   };
 
   classes(): string {
     return `${this.base} ${this.variants[this.variant()]} ${this.sizes[this.size()]}`;
-  }
-
-  iconPx(): number {
-    return this.iconSizes[this.size()];
   }
 }
