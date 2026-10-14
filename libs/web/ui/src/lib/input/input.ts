@@ -65,7 +65,7 @@ export class Input implements ControlValueAccessor {
   value = signal<string>('');
   disabled = signal<boolean>(false);
 
-  private onChange: (value: string) => void = (_value: string) => {
+  private onChange: (value: string) => void = () => {
     /* overridden by registerOnChange once the form binds */
   };
 
