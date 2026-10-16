@@ -27,7 +27,6 @@ import {
   LucideCircleCheck,
   LucideClock,
 } from '@lucide/angular';
-import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { ThemeService } from '@opshub/web/ui';
 import { appRoutes } from './app.routes';
 
@@ -56,7 +55,6 @@ export const appConfig: ApplicationConfig = {
       LucideCircleCheck,
       LucideClock,
     ),
-    provideCharts(withDefaultRegisterables()),
     provideAppInitializer(() => {
       inject(ThemeService);
     }),

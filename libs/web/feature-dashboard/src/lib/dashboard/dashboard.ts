@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { BaseChartDirective } from 'ng2-charts';
 import type { ChartConfiguration, ChartData } from 'chart.js';
 import { PageHeader, StatCard, ChartCard } from '@opshub/web/ui';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { DashboardDataService } from '../dashboard-data/dashboard-data.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { DashboardDataService } from '../dashboard-data/dashboard-data.service';
   standalone: true,
   imports: [PageHeader, StatCard, ChartCard, BaseChartDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [provideCharts(withDefaultRegisterables())],
   templateUrl: './dashboard.html',
 })
 export class Dashboard {
