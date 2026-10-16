@@ -1,0 +1,54 @@
+<div class="flex flex-col gap-6">
+  <ops-page-header
+    title="Dashboard"
+    description="An overview of operations across your organization."
+  />
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+    @for (kpi of kpis; track kpi.label) {
+    <ops-stat-card
+      [label]="kpi.label"
+      [value]="kpi.value"
+      [icon]="kpi.icon"
+      [trendValue]="kpi.trendValue"
+      [trendDirection]="kpi.trendDirection"
+    />
+    }
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+    <ops-chart-card
+      title="Task Completion"
+      description="Completed, pending, and overdue tasks this week"
+      class="lg:col-span-2"
+    >
+      <canvas
+        baseChart
+        [data]="taskCompletionData"
+        [options]="taskCompletionOptions"
+        type="line"
+      ></canvas>
+    </ops-chart-card>
+
+    <ops-chart-card
+      title="Team Performance"
+      description="Completed tasks by department"
+    >
+      <canvas
+        baseChart
+        [data]="departmentPerformanceData"
+        [options]="departmentPerformanceOptions"
+        type="bar"
+      ></canvas>
+    </ops-chart-card>
+
+    <ops-chart-card title="Resource Usage" description="Allocation by category">
+      <canvas
+        baseChart
+        [data]="resourceUsageData"
+        [options]="resourceUsageOptions"
+        type="doughnut"
+      ></canvas>
+    </ops-chart-card>
+  </div>
+</div>

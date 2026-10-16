@@ -20,6 +20,12 @@ import {
   LucideSearch,
   LucideSunMoon,
   LucideBell,
+  LucideActivity,
+  LucideTrendingUp,
+  LucideTrendingDown,
+  LucideMinus,
+  LucideCircleCheck,
+  LucideClock,
 } from '@lucide/angular';
 import { ThemeService } from '@opshub/web/ui';
 import { appRoutes } from './app.routes';
@@ -42,6 +48,12 @@ export const appConfig: ApplicationConfig = {
       LucideSearch,
       LucideSunMoon,
       LucideBell,
+      LucideActivity,
+      LucideTrendingUp,
+      LucideTrendingDown,
+      LucideMinus,
+      LucideCircleCheck,
+      LucideClock,
     ),
     provideAppInitializer(() => {
       inject(ThemeService);
