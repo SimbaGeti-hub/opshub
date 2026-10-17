@@ -1,96 +1,71 @@
-# Opshub
+# OpsHub
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+**One workspace for smarter operations.**
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+OpsHub is an enterprise Operations Management Platform for managing employees, tasks, resources, approvals, teams, and analytics from one centralized system. Built as a demonstration of production-grade full-stack engineering practices: a modular Nx monorepo, Angular with signals, a hardened NestJS API, PostgreSQL, Keycloak-based authentication, and automated end-to-end testing with Playwright.
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This project is under active, phased development. The sections below reflect what is actually implemented today; the roadmap at the bottom shows what's coming next.
 
-## Run tasks
+## Features (implemented so far)
 
-To run tasks with Nx use:
+- Enterprise application shell: collapsible sidebar, top navigation, search, light/dark theme with system-preference detection and persistence
+- Operational dashboard with KPI cards and live charts (task completion, team performance, resource usage), built on mock data pending real API wiring
+- A hardened NestJS API: Helmet security headers, CORS allowlist, global request validation, Swagger/OpenAPI documentation, and a real health endpoint
+- Dockerized PostgreSQL for local development
 
-```sh
-npx nx <target> <project-name>
-```
+## Architecture
 
-For example:
+Angular (apps/web) talks to the NestJS API (apps/api), which talks to PostgreSQL.
 
-```sh
-npx nx build myproject
-```
+The workspace is an Nx monorepo using project-reference-based TypeScript, with enforced module boundaries so frontend and backend code can never cross-import, and feature libraries can never import each other directly.
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## Project structure
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+apps/web is the Angular application shell and routing. apps/api is the NestJS application bootstrap. apps/web-e2e is the Playwright test suite.
 
-## Add new projects
+libs/shared/models holds types shared between web and api. libs/shared/util holds framework-agnostic helpers. libs/web/ui is the design system (Button, Badge, Avatar, Input, StatCard, ChartCard, and more). libs/web/shell holds the Sidebar and TopNav. Each libs/web/feature-* is a lazy-loaded feature library, one per route. libs/api/common holds cross-cutting API concerns. libs/api/auth and libs/api/prisma are reserved for authentication and database access, landing in later phases.
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+## Local setup
 
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
-```
+Requirements: Node 22 or 24, npm, Docker.
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+Run npm install, then copy .env.example to .env.
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
+Start the frontend with npx nx serve web and visit http://localhost:4200.
 
-# Generate a library
-npx nx g @nx/react:lib some-lib
-```
+Start the API with npx nx serve api. It runs at http://localhost:3000/api/v1, with interactive Swagger docs at http://localhost:3000/api/v1/docs.
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## Docker
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Local infrastructure (PostgreSQL today; Keycloak joins once authentication lands) is defined in docker-compose.yml and started with the infra profile:
 
-## Set up CI!
+docker compose --profile infra up -d postgres
 
-### Step 1
+This starts Postgres on localhost:5432 with two databases: opshub (the application database) and opshub_keycloak (reserved for Keycloak's own storage, created automatically via infra/postgres/init).
 
-To connect to Nx Cloud, run the following command:
+Stop everything with docker compose down.
 
-```sh
-npx nx connect
-```
+## Environment variables
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+See .env.example for the full list. Never commit .env, it is gitignored; .env.example is the template.
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Testing commands
 
-### Step 2
+Run npx nx run-many -t lint test build for everything, or target a single project, for example npx nx test web or npx nx lint api.
 
-Use the following command to configure a CI workflow for your workspace:
+Playwright end-to-end tests land in a later phase.
 
-```sh
-npx nx g ci-workflow
-```
+## Roadmap
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Phase 1, Nx workspace and architecture: done.
+Phase 2, design system and app shell: done.
+Phase 3, dashboard: done.
+Phase 4, NestJS API foundation and Docker infra: done.
+Phase 5, PostgreSQL and Prisma: next.
+Phase 6, Keycloak and OIDC authentication: planned.
+Phase 7, role-based access control: planned.
+Phases 8 through 12, tasks, resources, users, analytics, notifications, audit: planned.
+Phase 13, Playwright end-to-end tests: planned.
+Phase 14, full Docker stack: planned.
+Phase 15, CI/CD: planned.
+Phases 16 and 17, performance, accessibility, security review, and polish: planned.
