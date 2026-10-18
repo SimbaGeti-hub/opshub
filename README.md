@@ -10,12 +10,13 @@ This project is under active, phased development. The sections below reflect wha
 
 - Enterprise application shell: collapsible sidebar, top navigation, search, light/dark theme with system-preference detection and persistence
 - Operational dashboard with KPI cards and live charts (task completion, team performance, resource usage), built on mock data pending real API wiring
-- A hardened NestJS API: Helmet security headers, CORS allowlist, global request validation, Swagger/OpenAPI documentation, and a real health endpoint
-- Dockerized PostgreSQL for local development
+- A hardened NestJS API: Helmet security headers, CORS allowlist, global request validation, Swagger/OpenAPI documentation, and a real health endpoint backed by a live database check
+- A full PostgreSQL schema via Prisma: users, departments, tasks, resources, resource requests, notifications, audit logs, and announcements, with enforced relations and a database-level constraint on resource quantities
+- Seed data: three role-based users, departments, sample tasks, a resource, and an announcement, so the database looks realistic immediately after setup
 
 ## Architecture
 
-Angular (apps/web) talks to the NestJS API (apps/api), which talks to PostgreSQL.
+Angular (apps/web) talks to the NestJS API (apps/api), which talks to PostgreSQL through Prisma.
 
 The workspace is an Nx monorepo using project-reference-based TypeScript, with enforced module boundaries so frontend and backend code can never cross-import, and feature libraries can never import each other directly.
 
@@ -23,7 +24,7 @@ The workspace is an Nx monorepo using project-reference-based TypeScript, with e
 
 apps/web is the Angular application shell and routing. apps/api is the NestJS application bootstrap. apps/web-e2e is the Playwright test suite.
 
-libs/shared/models holds types shared between web and api. libs/shared/util holds framework-agnostic helpers. libs/web/ui is the design system (Button, Badge, Avatar, Input, StatCard, ChartCard, and more). libs/web/shell holds the Sidebar and TopNav. Each libs/web/feature-* is a lazy-loaded feature library, one per route. libs/api/common holds cross-cutting API concerns. libs/api/auth and libs/api/prisma are reserved for authentication and database access, landing in later phases.
+libs/shared/models holds types shared between web and api. libs/shared/util holds framework-agnostic helpers. libs/web/ui is the design system (Button, Badge, Avatar, Input, StatCard, ChartCard, and more). libs/web/shell holds the Sidebar and TopNav. Each libs/web/feature-* is a lazy-loaded feature library, one per route. libs/api/common holds cross-cutting API concerns. libs/api/auth is reserved for authentication, landing in a later phase. libs/api/prisma holds the Prisma schema, migrations, generated client, PrismaService, and the seed script.
 
 ## Local setup
 
@@ -31,9 +32,19 @@ Requirements: Node 22 or 24, npm, Docker.
 
 Run npm install, then copy .env.example to .env.
 
+Start Postgres with docker compose --profile infra up -d postgres (see Docker below), then apply the schema and seed the database, covered in the Database section.
+
 Start the frontend with npx nx serve web and visit http://localhost:4200.
 
 Start the API with npx nx serve api. It runs at http://localhost:3000/api/v1, with interactive Swagger docs at http://localhost:3000/api/v1/docs.
+
+## Database
+
+The schema lives in libs/api/prisma/src/schema.prisma, configured through prisma7.config.ts at the repo root.
+
+Apply migrations with npx prisma migrate dev. Generate the Prisma client with npx prisma generate (this also runs automatically after a migration). Seed the database with realistic sample data using npx prisma db seed.
+
+Three seeded users, each with the password set up separately in Keycloak once authentication lands: admin@opshub.local (ADMIN), manager@opshub.local (MANAGER), and employee@opshub.local (EMPLOYEE).
 
 ## Docker
 
@@ -61,8 +72,8 @@ Phase 1, Nx workspace and architecture: done.
 Phase 2, design system and app shell: done.
 Phase 3, dashboard: done.
 Phase 4, NestJS API foundation and Docker infra: done.
-Phase 5, PostgreSQL and Prisma: next.
-Phase 6, Keycloak and OIDC authentication: planned.
+Phase 5, PostgreSQL and Prisma: done.
+Phase 6, Keycloak and OIDC authentication: next.
 Phase 7, role-based access control: planned.
 Phases 8 through 12, tasks, resources, users, analytics, notifications, audit: planned.
 Phase 13, Playwright end-to-end tests: planned.

@@ -1,9 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { PrismaService } from '@opshub/api/prisma';
 import { HealthStatus } from './health-status.dto';
 
 @Injectable()
 export class HealthService {
   private readonly logger = new Logger(HealthService.name);
+
+  constructor(private readonly prisma: PrismaService) {}
 
   async check(): Promise<HealthStatus> {
     const databaseUp = await this.checkDatabase();
@@ -16,10 +19,8 @@ export class HealthService {
   }
 
   private async checkDatabase(): Promise<boolean> {
-    // Prisma lands in Phase 5; this placeholder reports the database
-    // as reachable so the endpoint has a stable shape until the real
-    // connectivity check is wired in.
     try {
+      await this.prisma.$queryRaw`SELECT 1`;
       return true;
     } catch (error) {
       this.logger.error('Database health check failed', error);
