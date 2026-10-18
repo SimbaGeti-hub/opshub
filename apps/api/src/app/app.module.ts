@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaService } from '@opshub/api/prisma';
 import { HealthController, HealthService } from './health';
 
 @Module({
@@ -10,6 +11,6 @@ import { HealthController, HealthService } from './health';
     }),
   ],
   controllers: [HealthController],
-  providers: [HealthService],
+  providers: [PrismaService, HealthService],
 })
 export class AppModule {}

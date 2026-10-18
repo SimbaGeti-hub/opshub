@@ -52,3 +52,6 @@ playwright/.auth
 playwright-report
 test-results
 .angular
+
+/../libs/api/prisma/src/generated/client
+libs/api/prisma/src/generated

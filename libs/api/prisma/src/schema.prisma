@@ -1,0 +1,207 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  EMPLOYEE
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  BLOCKED
+  COMPLETED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum ResourceRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FULFILLED
+}
+
+enum NotificationType {
+  TASK_ASSIGNED
+  TASK_COMPLETED
+  RESOURCE_REQUEST_APPROVED
+  RESOURCE_REQUEST_REJECTED
+  SYSTEM_ANNOUNCEMENT
+}
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users User[]
+  tasks Task[]
+
+  @@map("departments")
+}
+
+model User {
+  id           String     @id @default(cuid())
+  keycloakId   String     @unique
+  email        String     @unique
+  name         String
+  role         Role       @default(EMPLOYEE)
+  status       UserStatus @default(ACTIVE)
+  lastActiveAt DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+
+  manager   User?   @relation("UserManager", fields: [managerId], references: [id])
+  managerId String?
+  reports   User[]  @relation("UserManager")
+
+  assignedTasks    Task[]            @relation("TaskAssignee")
+  createdTasks     Task[]            @relation("TaskCreator")
+  resourceRequests ResourceRequest[] @relation("RequestRequester")
+  decidedRequests  ResourceRequest[] @relation("RequestApprover")
+  notifications    Notification[]
+  auditLogs        AuditLog[]
+  announcements    Announcement[]
+
+  @@index([departmentId])
+  @@index([managerId])
+  @@index([status])
+  @@map("users")
+}
+
+model Task {
+  id          String       @id @default(cuid())
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  assignee   User?   @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  assigneeId String?
+
+  createdBy   User   @relation("TaskCreator", fields: [createdById], references: [id])
+  createdById String
+
+  department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+
+  @@index([status, dueDate])
+  @@index([assigneeId])
+  @@index([departmentId])
+  @@map("tasks")
+}
+
+model Resource {
+  id                String   @id @default(cuid())
+  name              String
+  category          String
+  quantityTotal     Int
+  quantityAvailable Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  requests ResourceRequest[]
+
+  @@map("resources")
+}
+
+model ResourceRequest {
+  id           String                @id @default(cuid())
+  quantity     Int
+  status       ResourceRequestStatus @default(PENDING)
+  reason       String?
+  decisionNote String?
+  createdAt    DateTime              @default(now())
+  updatedAt    DateTime              @updatedAt
+
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String
+
+  requester   User   @relation("RequestRequester", fields: [requesterId], references: [id])
+  requesterId String
+
+  approver   User?   @relation("RequestApprover", fields: [approverId], references: [id])
+  approverId String?
+
+  @@index([status, createdAt])
+  @@index([requesterId])
+  @@map("resource_requests")
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  type       NotificationType
+  title      String
+  body       String
+  entityType String?
+  entityId   String?
+  readAt     DateTime?
+  createdAt  DateTime         @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  entityType String
+  entityId   String
+  metadata   Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  actor   User   @relation(fields: [actorId], references: [id])
+  actorId String
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
+
+  @@index([publishedAt])
+  @@map("announcements")
+}
