@@ -1,0 +1,104 @@
+{
+  "realm": "opshub",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "accessTokenLifespan": 900,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "roles": {
+    "realm": [
+      { "name": "ADMIN", "description": "Full administrative access" },
+      {
+        "name": "MANAGER",
+        "description": "Team and resource management access"
+      },
+      { "name": "EMPLOYEE", "description": "Standard employee access" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "opshub-web",
+      "name": "OpsHub Web",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:4200/*"],
+      "webOrigins": ["http://localhost:4200"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      },
+      "protocolMappers": [
+        {
+          "name": "audience-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-mapper",
+          "consentRequired": false,
+          "config": {
+            "included.client.audience": "opshub-api",
+            "id.token.claim": "false",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "opshub-api",
+      "name": "OpsHub API",
+      "enabled": true,
+      "publicClient": false,
+      "bearerOnly": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false
+    }
+  ],
+  "users": [
+    {
+      "id": "seed-admin-id",
+      "username": "admin@opshub.local",
+      "email": "admin@opshub.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Avery",
+      "lastName": "Admin",
+      "credentials": [
+        { "type": "password", "value": "ChangeMe123!", "temporary": false }
+      ],
+      "realmRoles": ["ADMIN"]
+    },
+    {
+      "id": "seed-manager-id",
+      "username": "manager@opshub.local",
+      "email": "manager@opshub.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Morgan",
+      "lastName": "Manager",
+      "credentials": [
+        { "type": "password", "value": "ChangeMe123!", "temporary": false }
+      ],
+      "realmRoles": ["MANAGER"]
+    },
+    {
+      "id": "seed-employee-id",
+      "username": "employee@opshub.local",
+      "email": "employee@opshub.local",
+      "emailVerified": true,
+      "enabled": true,
+      "firstName": "Ellis",
+      "lastName": "Employee",
+      "credentials": [
+        { "type": "password", "value": "ChangeMe123!", "temporary": false }
+      ],
+      "realmRoles": ["EMPLOYEE"]
+    }
+  ]
+}
