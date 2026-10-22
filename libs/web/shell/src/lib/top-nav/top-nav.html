@@ -24,6 +24,10 @@
       <svg [lucideIcon]="'bell'" class="h-5 w-5"></svg>
     </ops-icon-button>
 
-    <ops-avatar name="Simba Geti" size="sm" />
+    <ops-avatar [name]="displayName()" size="sm" />
+
+    <ops-icon-button label="Sign out" (click)="signOut()">
+      <svg [lucideIcon]="'log-out'" class="h-5 w-5"></svg>
+    </ops-icon-button>
   </div>
 </header>
