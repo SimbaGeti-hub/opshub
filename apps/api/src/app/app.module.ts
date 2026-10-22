@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { PrismaService } from '@opshub/api/prisma';
+import { AuthModule } from '@opshub/api/auth';
+import { PrismaModule } from '@opshub/api/prisma';
 import { HealthController, HealthService } from './health';
+import { UsersController } from './users';
 
 @Module({
   imports: [
@@ -9,8 +11,10 @@ import { HealthController, HealthService } from './health';
       isGlobal: true,
       envFilePath: ['.env'],
     }),
+    PrismaModule,
+    AuthModule,
   ],
-  controllers: [HealthController],
-  providers: [PrismaService, HealthService],
+  controllers: [HealthController, UsersController],
+  providers: [HealthService],
 })
 export class AppModule {}
