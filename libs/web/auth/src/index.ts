@@ -1,1 +1,1 @@
-export * from './lib/web-auth/web-auth';
+export * from './lib/auth-guard/auth-guard';

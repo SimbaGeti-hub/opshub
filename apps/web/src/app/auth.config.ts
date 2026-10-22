@@ -5,7 +5,7 @@ export const authConfig: OpenIdConfiguration = {
   redirectUrl: window.location.origin,
   postLogoutRedirectUri: window.location.origin,
   clientId: 'opshub-web',
-  scope: 'openid profile email offline_access',
+  scope: 'openid profile email',
   responseType: 'code',
   silentRenew: true,
   useRefreshToken: true,
