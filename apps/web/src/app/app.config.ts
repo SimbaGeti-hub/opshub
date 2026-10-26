@@ -37,6 +37,8 @@ import {
 import { ThemeService } from '@opshub/web/ui';
 import { appRoutes } from './app.routes';
 import { authConfig } from './auth.config';
+import { environment } from './environment';
+import { API_BASE_URL } from '@opshub/web/data-access';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -44,6 +46,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     provideHttpClient(withInterceptors([authInterceptor()])),
     provideAuth({ config: authConfig }, withAppInitializerAuthCheck()),
+    { provide: API_BASE_URL, useValue: environment.apiUrl },
     provideLucideIcons(
       LucideLayoutDashboard,
       LucideListChecks,

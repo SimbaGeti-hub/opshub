@@ -1,13 +1,14 @@
 import { OpenIdConfiguration } from 'angular-auth-oidc-client';
+import { environment } from './environment';
 
 export const authConfig: OpenIdConfiguration = {
-  authority: 'http://localhost:8080/realms/opshub',
+  authority: `${environment.keycloakUrl}/realms/${environment.keycloakRealm}`,
   redirectUrl: window.location.origin,
   postLogoutRedirectUri: window.location.origin,
-  clientId: 'opshub-web',
+  clientId: environment.keycloakClientId,
   scope: 'openid profile email',
   responseType: 'code',
   silentRenew: true,
   useRefreshToken: true,
-  secureRoutes: ['http://localhost:3000/api/v1'],
+  secureRoutes: [environment.apiUrl],
 };
