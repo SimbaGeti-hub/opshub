@@ -19,6 +19,9 @@
   "references": [
     {
       "path": "../../libs/api/prisma/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/api/auth/tsconfig.lib.json"
     }
   ]
 }

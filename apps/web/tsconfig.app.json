@@ -20,6 +20,15 @@
       "path": "../../libs/web/feature-dashboard/tsconfig.lib.json"
     },
     {
+      "path": "../../libs/web/feature-auth"
+    },
+    {
+      "path": "../../libs/web/auth/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/web/data-access/tsconfig.lib.json"
+    },
+    {
       "path": "../../libs/web/ui/tsconfig.lib.json"
     }
   ]

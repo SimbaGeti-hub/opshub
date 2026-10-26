@@ -1,3 +1,4 @@
+@if (showShell()) {
 <div class="flex h-screen overflow-hidden bg-[var(--color-bg)]">
   <ops-sidebar />
   <div class="flex flex-1 flex-col overflow-hidden">
@@ -7,3 +8,6 @@
     </main>
   </div>
 </div>
+} @else {
+<router-outlet></router-outlet>
+}

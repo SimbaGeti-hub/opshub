@@ -1,5 +1,10 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { API_BASE_URL } from '@opshub/web/data-access';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { of } from 'rxjs';
 import {
   provideLucideIcons,
   LucideLayoutDashboard,
@@ -15,6 +20,7 @@ import {
   LucideSearch,
   LucideSunMoon,
   LucideBell,
+  LucideLogOut,
 } from '@lucide/angular';
 import { App } from './app';
 
@@ -24,6 +30,17 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter([]),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: API_BASE_URL, useValue: 'http://api.test/v1' },
+        {
+          provide: OidcSecurityService,
+          useValue: {
+            userData$: of({ userData: { name: 'Test User' } }),
+            isAuthenticated$: of({ isAuthenticated: false }),
+            logoff: () => of(null),
+          },
+        },
         provideLucideIcons(
           LucideLayoutDashboard,
           LucideListChecks,
@@ -38,6 +55,7 @@ describe('App', () => {
           LucideSearch,
           LucideSunMoon,
           LucideBell,
+          LucideLogOut,
         ),
       ],
     }).compileComponents();

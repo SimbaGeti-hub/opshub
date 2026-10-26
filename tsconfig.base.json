@@ -47,7 +47,8 @@
       "@opshub/web/feature-team": ["libs/web/feature-team/src/index.ts"],
       "@opshub/web/feature-users": ["libs/web/feature-users/src/index.ts"],
       "@opshub/web/shell": ["libs/web/shell/src/index.ts"],
-      "@opshub/web/ui": ["libs/web/ui/src/index.ts"]
+      "@opshub/web/ui": ["libs/web/ui/src/index.ts"],
+      "@opshub/web/feature-auth": ["./libs/web/feature-auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
