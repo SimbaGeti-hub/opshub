@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { authGuard } from '@opshub/web/auth';
+import { authGuard, permissionGuard } from '@opshub/web/auth';
 
 export const appRoutes: Route[] = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -9,8 +9,14 @@ export const appRoutes: Route[] = [
       import('@opshub/web/feature-auth').then((m) => m.Login),
   },
   {
-    path: 'dashboard',
+    path: 'forbidden',
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('@opshub/web/feature-auth').then((m) => m.Forbidden),
+  },
+  {
+    path: 'dashboard',
+    canActivate: [permissionGuard('dashboard:view')],
     loadComponent: () =>
       import('@opshub/web/feature-dashboard').then((m) => m.Dashboard),
   },

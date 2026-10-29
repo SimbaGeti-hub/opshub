@@ -13,6 +13,7 @@ This project is under active, phased development. The sections below reflect wha
 - Real authentication through Keycloak using OpenID Connect (Authorization Code flow with PKCE): a branded login page, a route guard, sign out that ends the Keycloak session, and the signed-in user's name and role shown in the top bar
 - A hardened NestJS API: Helmet security headers, CORS allowlist, global request validation, Swagger/OpenAPI documentation, and a health endpoint backed by a live database check
 - Every API route is protected by default. Tokens are verified against Keycloak's public keys (signature, issuer, audience, expiry), users are provisioned on their first request, and a Public decorator marks the few open routes
+- Role based access control: a single permission map shared by the API and the web app, enforced on every API route and mirrored in route guards and the sidebar menu
 - A full PostgreSQL schema via Prisma: users, departments, tasks, resources, resource requests, notifications, audit logs, and announcements, with enforced relations and a database-level constraint on resource quantities
 - Seed data: three role-based users, departments, sample tasks, a resource, and an announcement, so the database looks realistic immediately after setup
 
@@ -29,6 +30,14 @@ Passwords never touch OpsHub. Keycloak owns identities, sessions, and roles, and
 The browser uses the public client opshub-web with the Authorization Code flow and PKCE. The access token carries the opshub-api audience, which the API requires. Realm roles ADMIN, MANAGER, and EMPLOYEE arrive in the token and are mirrored into the users table on each request, so the database always reflects what Keycloak says.
 
 The realm, its clients, and three development accounts are defined in infra/keycloak/realm-export.json and imported automatically when Keycloak starts. The accounts are admin@opshub.local, manager@opshub.local, and employee@opshub.local, all with the development-only password ChangeMe123!. Change these before any real deployment.
+
+## Authorization
+
+Three roles exist: ADMIN, MANAGER, and EMPLOYEE. Each role holds a set of permissions such as tasks:create or users:manage, defined once in libs/shared/models and used by both the API and the web app, so the two can never disagree. Managers hold everything employees hold, and administrators hold everything managers hold.
+
+The API is the authority. Every route is closed by default: the global JWT guard identifies the caller, then the permissions guard checks the permissions a route declares with the RequirePermissions decorator. A caller who lacks one receives a 403 response that does not reveal which permission was missing, while the server log records the exact reason.
+
+The web app mirrors the rules for a better experience, never for security. Route guards send signed out visitors to the login page and users without access to a Forbidden page, and the sidebar only lists pages the signed in role may open. Hiding a menu item never replaces the check on the server.
 
 ## Project structure
 
@@ -84,8 +93,8 @@ Phase 3, dashboard: done.
 Phase 4, NestJS API foundation and Docker infra: done.
 Phase 5, PostgreSQL and Prisma: done.
 Phase 6, Keycloak and OIDC authentication: done.
-Phase 7, role-based access control: next.
-Phases 8 through 12, tasks, resources, users, analytics, notifications, audit: planned.
+Phase 7, role-based access control: done.
+Phases 8 through 12, tasks, resources, users, analytics, notifications, audit: next.
 Phase 13, Playwright end-to-end tests: planned.
 Phase 14, full Docker stack: planned.
 Phase 15, CI/CD: planned.

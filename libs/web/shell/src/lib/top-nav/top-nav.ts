@@ -7,8 +7,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { LucideDynamicIcon } from '@lucide/angular';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { catchError, filter, map, of, switchMap } from 'rxjs';
-import { CurrentUserService } from '@opshub/web/data-access';
+import { map } from 'rxjs';
+import { CurrentUserStore } from '@opshub/web/auth';
 import { Avatar, Badge, IconButton, ThemeService } from '@opshub/web/ui';
 
 interface UserProfile {
@@ -26,7 +26,7 @@ interface UserProfile {
 export class TopNav {
   private readonly themeService = inject(ThemeService);
   private readonly oidcSecurityService = inject(OidcSecurityService);
-  private readonly currentUserService = inject(CurrentUserService);
+  private readonly currentUserStore = inject(CurrentUserStore);
 
   private readonly profile = toSignal(
     this.oidcSecurityService.userData$.pipe(
@@ -35,22 +35,12 @@ export class TopNav {
     { initialValue: null },
   );
 
-  private readonly apiUser = toSignal(
-    this.oidcSecurityService.isAuthenticated$.pipe(
-      filter(({ isAuthenticated }) => isAuthenticated),
-      switchMap(() =>
-        this.currentUserService.getMe().pipe(catchError(() => of(null))),
-      ),
-    ),
-    { initialValue: null },
-  );
-
-  protected readonly role = computed(() => this.apiUser()?.role ?? null);
+  protected readonly role = this.currentUserStore.role;
 
   protected readonly displayName = computed(() => {
     const profile = this.profile();
     return (
-      this.apiUser()?.name ??
+      this.currentUserStore.user()?.name ??
       profile?.name ??
       profile?.preferred_username ??
       'User'
