@@ -33,6 +33,7 @@ import {
   LucideCircleCheck,
   LucideClock,
   LucideLogOut,
+  LucideShieldAlert,
 } from '@lucide/angular';
 import { ThemeService } from '@opshub/web/ui';
 import { appRoutes } from './app.routes';
@@ -68,6 +69,7 @@ export const appConfig: ApplicationConfig = {
       LucideCircleCheck,
       LucideClock,
       LucideLogOut,
+      LucideShieldAlert,
     ),
     provideAppInitializer(() => {
       inject(ThemeService);
