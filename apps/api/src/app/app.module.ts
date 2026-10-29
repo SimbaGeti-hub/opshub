@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '@opshub/api/auth';
 import { PrismaModule } from '@opshub/api/prisma';
 import { HealthController, HealthService } from './health';
+import { TasksModule } from './tasks';
 import { UsersController, UsersService } from './users';
 
 @Module({
@@ -13,6 +14,7 @@ import { UsersController, UsersService } from './users';
     }),
     PrismaModule,
     AuthModule,
+    TasksModule,
   ],
   controllers: [HealthController, UsersController],
   providers: [HealthService, UsersService],
