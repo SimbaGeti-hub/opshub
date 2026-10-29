@@ -53,7 +53,11 @@ export default [
             },
             {
               sourceTag: 'type:data-access',
-              onlyDependOnLibsWithTags: ['type:util', 'type:models'],
+              onlyDependOnLibsWithTags: [
+                'type:data-access',
+                'type:util',
+                'type:models',
+              ],
             },
             {
               sourceTag: 'type:util',

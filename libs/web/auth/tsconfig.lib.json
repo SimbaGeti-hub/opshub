@@ -15,5 +15,13 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../shared/models/tsconfig.lib.json"
+    },
+    {
+      "path": "../data-access/tsconfig.lib.json"
+    }
   ]
 }
