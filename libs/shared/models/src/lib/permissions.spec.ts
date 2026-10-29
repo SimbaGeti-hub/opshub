@@ -41,6 +41,7 @@ describe('permissions', () => {
     const managerLevel: Permission[] = [
       'tasks:create',
       'tasks:assign',
+      'tasks:delete',
       'resources:approve',
       'team:view',
       'analytics:view_team',
